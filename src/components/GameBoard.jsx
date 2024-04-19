@@ -6,15 +6,17 @@ const initialGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard() {
+export default function GameBoard({ activePlayer, onGameBoardStateChange }) {
   const [gameBoard, setGameBoard] = useState(initialGameBoard);
 
-  function changeGameBoardState(rowIndex, colIndex, symbol) {
+  function changeGameBoardState(rowIndex, colIndex) {
     setGameBoard((prevGameBoard) => {
       let newGameBoardState = [...prevGameBoard.map((row) => [...row])];
-      newGameBoardState[rowIndex][colIndex] = "X";
+      newGameBoardState[rowIndex][colIndex] = activePlayer;
       return newGameBoardState;
     });
+
+    onGameBoardStateChange();
   }
 
   return (
@@ -25,9 +27,7 @@ export default function GameBoard() {
             {row.map((playerSymbol, columnIndex) => (
               <li key={columnIndex}>
                 <button
-                  onClick={() =>
-                    changeGameBoardState(rowIndex, columnIndex, playerSymbol)
-                  }
+                  onClick={() => changeGameBoardState(rowIndex, columnIndex)}
                 >
                   {playerSymbol}
                 </button>
